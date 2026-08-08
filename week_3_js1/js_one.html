@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px auto;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #ddd;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .tab-btn.active {
+            background-color: #007BFF;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button.calc-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button.calc-btn:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #495057;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Area Calculator</h2>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchShape('rectangle')">Rectangle</button>
+        <button class="tab-btn" onclick="switchShape('circle')">Circle</button>
+    </div>
+
+    <div id="rectangle-form">
+        <div class="form-group">
+            <label for="length">Length:</label>
+            <input type="number" id="length" placeholder="Enter length" min="0">
+        </div>
+        <div class="form-group">
+            <label for="width">Width:</label>
+            <input type="number" id="width" placeholder="Enter width" min="0">
+        </div>
+    </div>
+
+    <div id="circle-form" class="hidden">
+        <div class="form-group">
+            <label for="radius">Radius:</label>
+            <input type="number" id="radius" placeholder="Enter radius" min="0">
+        </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculateArea()">Calculate Area</button>
+
+    <div class="result" id="result-display">
+        Result: --
+    </div>
+
+    <script>
+        let currentShape = 'rectangle';
+        
+        function switchShape(shape) {
+            currentShape = shape;
+            
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons[0].classList.toggle('active', shape === 'rectangle');
+            buttons[1].classList.toggle('active', shape === 'circle');
+
+
+            document.getElementById('rectangle-form').classList.toggle('hidden', shape !== 'rectangle');
+            document.getElementById('circle-form').classList.toggle('hidden', shape !== 'circle');
+            
+            document.getElementById('result-display').innerText = "Result: --";
+        }
+
+
+        function calculateArea() {
+            let area = 0;
+            const resultDisplay = document.getElementById('result-display');
+
+            if (currentShape === 'rectangle') {
+                const length = parseFloat(document.getElementById('length').value);
+                const width = parseFloat(document.getElementById('width').value);
+
+                if (isNaN(length) || isNaN(width) || length <= 0 || width <= 0) {
+                    resultDisplay.innerText = "Please enter valid positive numbers.";
+                    return;
+                }
+                
+                area = length * width;
+                resultDisplay.innerText = `Area: ${area.toFixed(2)} sq units`;
+
+            } else if (currentShape === 'circle') {
+                const radius = parseFloat(document.getElementById('radius').value);
+
+                if (isNaN(radius) || radius <= 0) {
+                    resultDisplay.innerText = "Please enter a valid positive radius.";
+                    return;
+                }
+
+                area = Math.PI * Math.pow(radius, 2);
+                resultDisplay.innerText = `Area: ${area.toFixed(2)} sq units`;
+            }
+        }
+    </script>
+
+</body>
+</html>

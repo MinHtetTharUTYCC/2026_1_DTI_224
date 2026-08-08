@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculate Grade</title>
+</head>
+<body>
+  <a href="../index.html" style="display:inline-block;margin:15px;padding:10px 20px;background-color:#007BFF;color:white;text-decoration:none;border-radius:6px;font-size:14px;">← Back to Home</a>
+  <h1>Calculate Grade</h1>
+  <label for="amount">Enter Amount:</label>
+  <input type="number" id="amount" min="0" max="100">
+  <button onclick="calculate()">Submit</button>
+  <p id="result"></p>
+
+  <script>
+    function calculate() {
+      const score = parseFloat(document.getElementById('amount').value);
+      const result = document.getElementById('result');
+
+      if (isNaN(score) || score < 0 || score > 100) {
+        result.textContent = 'Please enter a valid number between 0 and 100.';
+        return;
+      }
+
+      let grade;
+      if (score >= 90) grade = 'A';
+      else if (score >= 80) grade = 'B';
+      else if (score >= 70) grade = 'C';
+      else if (score >= 60) grade = 'D';
+      else grade = 'F';
+
+      result.textContent = 'You got ' + grade;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Calculate Change</title>
+    </head>
+    <body>
+        <a href="../index.html" style="display:inline-block;margin:15px;padding:10px 20px;background-color:#007BFF;color:white;text-decoration:none;border-radius:6px;font-size:14px;">← Back to Home</a>
+        <h1>Calculate Change</h1>
+        <form id="changeForm">
+            <label for="amount">Enter Amount:</label>
+            <input type="number" id="amount" min="0" />
+            <button type="submit">Submit</button>
+        </form>
+        <p id="result"></p>
+
+        <script>
+            document.getElementById('changeForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                calculateTheChange();
+            });
+
+            function calculateTheChange() {
+                const score = parseFloat(document.getElementById('amount').value);
+                const result = document.getElementById('result');
+
+                if (isNaN(score) || score < 0) {
+                    result.textContent = 'Please enter a valid number greater than or equal to 0.';
+                    return;
+                }
+
+                const denominations = [1000, 500, 100, 50, 20, 10, 5, 2, 1];
+                let change = score;
+                let changeResult = '';
+
+                for (let i = 0; i < denominations.length; i++) {
+                    const count = Math.floor(change / denominations[i]);
+                    if (count > 0) {
+                        changeResult += `${count} of ฿${denominations[i]}<br>`;
+                        change -= count * denominations[i];
+                    }
+                }
+                result.innerHTML = changeResult;
+            }
+        </script>
+    </body>
+</html>

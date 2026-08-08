@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<body>
+<a href="../index.html" style="display:inline-block;margin:15px;padding:10px 20px;background-color:#007BFF;color:white;text-decoration:none;border-radius:6px;font-size:14px;">← Back to Home</a>
+<h1>Distance Calculator from KBU Nakara Building</h1>
+<p>Click the button to calculate your distance from KBU Nakara Building (13.803857858158006, 100.73967721203937).</p>
+
+<button onclick="getLocation()">Calculate Distance</button>
+<button id="clearBtn"onclick="clearData()" style="display: none;">Clear</button>
+
+<p id="demo"></p>
+
+<script>
+const x = document.getElementById("demo");
+const clearBtn = document.getElementById("clearBtn");
+
+// Nakara Building coordinates
+const TARGET_LAT = 13.803857858158006;
+const TARGET_LON = 100.73967721203937;
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function success(position) {
+  const currentLat = position.coords.latitude;
+  const currentLon = position.coords.longitude;
+  
+  const distance = calculateHaversineDistance(currentLat, currentLon, TARGET_LAT, TARGET_LON);
+  
+  x.innerHTML = `<strong>Current Location:</strong> ${currentLat}, ${currentLon}<br>` +
+                `<strong>Distance:</strong> ${distance.toFixed(2)} km from Nakara Building`;
+
+  // Show the clear button after displaying the distance
+  clearBtn.style.display = "inline";
+}
+
+function error() {
+  alert("Sorry, no position available.");
+}
+
+function clearData() {
+  x.innerHTML = "";
+  clearBtn.style.display = "none";
+}
+
+// Haversine formula to compute distance between two lat/lon points in km
+function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function toRad(degrees) {
+  return degrees * (Math.PI / 180);
+}
+</script>
+
+</body>
+</html>
